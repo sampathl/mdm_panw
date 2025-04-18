@@ -1,0 +1,12 @@
+# Node
+node_modules/
+dist/
+# Python
+*.pyc
+__pycache__/
+backend/.venv/
+# Mac & VSCode junk
+.DS_Store
+.vscode/
+# Env & secret files
+.env*
