@@ -1,4 +1,4 @@
-#!/Users/saml16/projects/mdm_panw/backend/.mdm/bin/python
+#!/Users/saml16/projects/mdm_panw/backend/.mdm/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
