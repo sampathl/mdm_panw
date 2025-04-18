@@ -10,3 +10,5 @@ backend/.venv/
 .vscode/
 # Env & secret files
 .env*
+# Prettier cache
+.prettiercache

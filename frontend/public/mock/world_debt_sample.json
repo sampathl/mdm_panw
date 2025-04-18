@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "USA",
+    "country_name": "United States",
+    "year": 2022,
+    "debt_type": "Long‑term external debt",
+    "usd_millions": 2162334
+  },
+  {
+    "country_code": "CHN",
+    "country_name": "China",
+    "year": 2022,
+    "debt_type": "Long‑term external debt",
+    "usd_millions": 2095138
+  },
+  {
+    "country_code": "IND",
+    "country_name": "India",
+    "year": 2022,
+    "debt_type": "Public and publicly‑guaranteed",
+    "usd_millions": 620691
+  }
+]
