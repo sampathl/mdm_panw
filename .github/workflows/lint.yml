@@ -1,0 +1,41 @@
+# ------------- file: .github/workflows/lint.yml -------------
+name: Lint
+
+on: [push, pull_request]          # run on every branch push & PR
+
+jobs:
+  js-and-python-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      # ───── Front‑end: Prettier check ─────
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Prettier format check
+        run: |
+          cd frontend
+          npm ci                      # installs exactly the locked versions
+          npx prettier -c "src/**/*.{js,jsx,ts,tsx,json,css,md}"
+
+      # ───── Back‑end: Flake8 lint ─────
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install back‑end deps
+        run: |
+          cd backend
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+      - name: Run Flake8
+        run: |
+          cd backend
+          source .venv/bin/activate
+          flake8 .
