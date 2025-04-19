@@ -1,4 +1,4 @@
-import DashboardLayout from "../layouts/DashboardLayout";
+import DashboardLayout from "../layouts/DashboardLayouts";
 import { Typography, Grid, Paper } from "@mui/material";
 
 export default function DashboardPage() {
