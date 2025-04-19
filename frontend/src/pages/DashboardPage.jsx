@@ -1,4 +1,4 @@
-import DashboardLayout from "../layouts/DashboardLayouts";
+import DashboardLayout from "../layouts/DashboardLayout";
 import OverviewCard from "../components/OverviewCard";
 import { Typography, Grid, Paper } from "@mui/material";
 
