@@ -1,10 +1,26 @@
 import DashboardLayout from "../layouts/DashboardLayout";
 import OverviewCard from "../components/OverviewCard";
-import { Typography, Grid, Paper } from "@mui/material";
+import { Typography, Grid, Paper, Box, CircularProgress, } from "@mui/material";
+import { useState, useEffect } from "react";
 
 export default function DashboardPage() {
 
-  const loading = false;
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/v1/debt")
+      .then((res) => res.json())
+      .then((json) => {
+        setData(json);
+        setLoading(false);
+      })
+      .catch((e) => {
+        console.error("Failed to load data", e);
+        setLoading(false);
+      });
+  }, []);
+
   if (loading) {
     return (
       <DashboardLayout>
