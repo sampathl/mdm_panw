@@ -3,6 +3,20 @@ import OverviewCard from "../components/OverviewCard";
 import { Typography, Grid, Paper } from "@mui/material";
 
 export default function DashboardPage() {
+
+  const loading = false;
+  if (loading) {
+    return (
+      <DashboardLayout>
+        <Box sx={{ textAlign: "center", mt: 4 }}>
+          <CircularProgress />
+        </Box>
+      </DashboardLayout>
+    );
+  }
+
+
+
   return (
     <DashboardLayout>
 
