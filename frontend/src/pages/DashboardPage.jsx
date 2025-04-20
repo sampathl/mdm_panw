@@ -1,5 +1,6 @@
 import DashboardLayout from "../layouts/DashboardLayout";
 import OverviewCard from "../components/OverviewCard";
+import DebtTable from "../components/DebtTable";
 import { Typography, Grid, Paper, Box, CircularProgress, } from "@mui/material";
 import { useState, useEffect } from "react";
 
@@ -12,6 +13,7 @@ export default function DashboardPage() {
     fetch("http://localhost:5000/api/v1/debt")
       .then((res) => res.json())
       .then((json) => {
+        
         setData(json);
         setLoading(false);
       })
@@ -20,6 +22,14 @@ export default function DashboardPage() {
         setLoading(false);
       });
   }, []);
+
+
+  const totalDebt = data.reduce((sum, row) => sum + row.usd_millions, 0);
+  const topDebtor = data.reduce(
+    (top, row) => (row.usd_millions > top.usd_millions ? row : top),
+    data[0]
+  );
+  const uniqueCountries = new Set(data.map((row) => row.country_name)).size;
 
   if (loading) {
     return (
@@ -45,7 +55,7 @@ export default function DashboardPage() {
           <Paper sx={{ p: 2, height: 120, textAlign: "center" }}>
           <OverviewCard
             title="Total Debt"
-            value={`Card 1`}
+            value={`$${totalDebt.toLocaleString()} M`}
           />
             
           </Paper>
@@ -53,16 +63,17 @@ export default function DashboardPage() {
         <Grid item xs={12} md={4}>
         <OverviewCard
             title="Top Debtor"
-            value={`Card 2`}
+            value={`${topDebtor.country_name} ($${topDebtor.usd_millions.toLocaleString()} M)`}
           />
         </Grid>
         <Grid item xs={12} md={4}>
           <OverviewCard
             title="# of Countries"
-            value={`Card 3`}
+            value={uniqueCountries}
           />
         </Grid>
       </Grid>
+      <DebtTable rows={data} />
     </DashboardLayout>
   );
 }
