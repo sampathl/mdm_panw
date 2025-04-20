@@ -1,6 +1,7 @@
 import DashboardLayout from "../layouts/DashboardLayout";
 import OverviewCard from "../components/OverviewCard";
 import DebtTable from "../components/DebtTable";
+import FilterBar from "../components/FilterBar";
 import { Typography, Grid, Paper, Box, CircularProgress, } from "@mui/material";
 import { useState, useEffect } from "react";
 
@@ -8,6 +9,8 @@ export default function DashboardPage() {
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedYear, setSelectedYear] = useState("All");
+  const [selectedCountry, setSelectedCountry] = useState("All");
 
   useEffect(() => {
     fetch("http://localhost:5000/api/v1/debt")
@@ -31,6 +34,18 @@ export default function DashboardPage() {
   );
   const uniqueCountries = new Set(data.map((row) => row.country_name)).size;
 
+  const yearOptions = data.length > 0 ? [...new Set(data.map((r) => r.year))].sort((a, b) => b - a) : [];
+  const countryOptions = data.length > 0 ? [...new Set(data.map((r) => r.country_name))].sort() : [];
+
+  const filteredData = data.filter((row) => {
+    const yearMatch = selectedYear === "All" || row.year === parseInt(selectedYear, 10);
+    const countryMatch =
+      selectedCountry === "All" ||
+      row.country_name.trim().toLowerCase() === selectedCountry.trim().toLowerCase();
+    return yearMatch && countryMatch;
+  });
+
+
   if (loading) {
     return (
       <DashboardLayout>
@@ -42,6 +57,9 @@ export default function DashboardPage() {
   }
 
 
+  console.log(filteredData)
+  console.log("Selected Year:", selectedYear);
+  console.log("Selected Country:", selectedCountry);
 
   return (
     <DashboardLayout>
@@ -49,6 +67,15 @@ export default function DashboardPage() {
       <Typography variant="h4" gutterBottom>
         Overview
       </Typography>
+
+      <FilterBar
+        yearOptions={yearOptions}
+        countryOptions={countryOptions}
+        selectedYear={selectedYear}
+        setSelectedYear={setSelectedYear}
+        selectedCountry={selectedCountry}
+        setSelectedCountry={setSelectedCountry}
+      />
 
       <Grid container spacing={2}>
         <Grid item xs={12} md={4}>
@@ -63,7 +90,8 @@ export default function DashboardPage() {
         <Grid item xs={12} md={4}>
         <OverviewCard
             title="Top Debtor"
-            value={`${topDebtor.country_name} ($${topDebtor.usd_millions.toLocaleString()} M)`}
+            value={`${topDebtor?.country_name || '-'} 
+              ($${topDebtor?.usd_millions?.toLocaleString() || '0'} M)`}
           />
         </Grid>
         <Grid item xs={12} md={4}>
@@ -73,7 +101,7 @@ export default function DashboardPage() {
           />
         </Grid>
       </Grid>
-      <DebtTable rows={data} />
+      <DebtTable rows={filteredData} />
     </DashboardLayout>
   );
 }
