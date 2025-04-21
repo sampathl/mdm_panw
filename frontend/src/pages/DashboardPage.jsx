@@ -5,26 +5,24 @@ import FilterBar from "../components/FilterBar";
 import { Typography, Grid, Paper, Box, CircularProgress, } from "@mui/material";
 import { useState, useEffect } from "react";
 
+import { useSelector, useDispatch } from "react-redux";
+import { fetchDebtData } from "../redux/debtSlice";
+
 export default function DashboardPage() {
 
-  const [data, setData] = useState([]);
+
+  const dispatch = useDispatch();
+  const { data, status, error } = useSelector((state) => state.debt);
+
   const [loading, setLoading] = useState(true);
   const [selectedYear, setSelectedYear] = useState("All");
   const [selectedCountry, setSelectedCountry] = useState("All");
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/v1/debt")
-      .then((res) => res.json())
-      .then((json) => {
-        
-        setData(json);
-        setLoading(false);
-      })
-      .catch((e) => {
-        console.error("Failed to load data", e);
-        setLoading(false);
-      });
-  }, []);
+    if (status === "idle") {
+      dispatch(fetchDebtData());
+    }
+  }, [status, dispatch]);
 
 
   const totalDebt = data.reduce((sum, row) => sum + row.usd_millions, 0);
@@ -46,12 +44,20 @@ export default function DashboardPage() {
   });
 
 
-  if (loading) {
+  if (status === "loading") {
     return (
       <DashboardLayout>
         <Box sx={{ textAlign: "center", mt: 4 }}>
           <CircularProgress />
         </Box>
+      </DashboardLayout>
+    );
+  }
+  
+  if (status === "failed") {
+    return (
+      <DashboardLayout>
+        <Typography color="error">Error: {error}</Typography>
       </DashboardLayout>
     );
   }
