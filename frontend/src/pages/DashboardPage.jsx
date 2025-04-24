@@ -7,6 +7,10 @@ import { useState, useEffect } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
 import { fetchDebtData } from "../redux/debtSlice";
+import {
+  setSelectedYear,
+  setSelectedCountry,
+} from "../redux/filterSlice";
 
 export default function DashboardPage() {
 
@@ -14,9 +18,8 @@ export default function DashboardPage() {
   const dispatch = useDispatch();
   const { data, status, error } = useSelector((state) => state.debt);
 
-  const [loading, setLoading] = useState(true);
-  const [selectedYear, setSelectedYear] = useState("All");
-  const [selectedCountry, setSelectedCountry] = useState("All");
+  const selectedYear = useSelector((state) => state.filters.selectedYear);
+  const selectedCountry = useSelector((state) => state.filters.selectedCountry);
 
   useEffect(() => {
     if (status === "idle") {

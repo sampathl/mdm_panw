@@ -5,5 +5,6 @@ import debtReducer from "./debtSlice";
 export const store = configureStore({
   reducer: {
     debt: debtReducer,
+    filters: filterReducer,
   },
 });
