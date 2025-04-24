@@ -39,10 +39,8 @@ export default function DashboardPage() {
   const countryOptions = data.length > 0 ? [...new Set(data.map((r) => r.country_name))].sort() : [];
 
   const filteredData = data.filter((row) => {
-    const yearMatch = selectedYear === "All" || row.year === parseInt(selectedYear, 10);
-    const countryMatch =
-      selectedCountry === "All" ||
-      row.country_name.trim().toLowerCase() === selectedCountry.trim().toLowerCase();
+    const yearMatch = selectedYear === "All" || row.year === selectedYear;
+    const countryMatch = selectedCountry === "All" || row.country_name === selectedCountry;
     return yearMatch && countryMatch;
   });
 
@@ -81,9 +79,9 @@ export default function DashboardPage() {
         yearOptions={yearOptions}
         countryOptions={countryOptions}
         selectedYear={selectedYear}
-        setSelectedYear={setSelectedYear}
+        setSelectedYear={(val) => dispatch(setSelectedYear(val))}
         selectedCountry={selectedCountry}
-        setSelectedCountry={setSelectedCountry}
+        setSelectedCountry={(val) => dispatch(setSelectedCountry(val))}
       />
 
       <Grid container spacing={2}>
