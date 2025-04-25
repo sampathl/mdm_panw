@@ -12,3 +12,6 @@ backend/.venv/
 .env*
 # Prettier cache
 .prettiercache
+#credentials
+backend/credentials
+frontend/credentials
