@@ -4,7 +4,7 @@ import os
 
 PROJECT_ID = "bigquery-public-data"
 DATASET = "world_bank_intl_debt"
-TABLE = "country_summary"
+TABLE = "international_debt"
 
 #change for Deployed service
 CREDENTIALS_FILE = Path(os.getenv("BIGQUERY_CREDENTIALS", "../../credentials/bigquery-key.json"))
@@ -21,10 +21,10 @@ def get_debt_data(limit=100):
           country_name,
           country_code,
           year,
-          debt_type,
-          usd_debt AS usd_millions
+          indicator_name,
+          value AS usd_millions
         FROM `{PROJECT_ID}.{DATASET}.{TABLE}`
-        WHERE usd_debt IS NOT NULL
+        WHERE value IS NOT NULL
         ORDER BY year DESC
         LIMIT {limit}
     """
