@@ -1,7 +1,12 @@
 from flask import Blueprint, jsonify, current_app
 import json
 from pathlib import Path
-from app.services.bigquery_service import get_debt_data
+from app.services.bigquery_service import (
+    fetch_country_summary,
+    fetch_country_series,
+    fetch_series_summary,
+    fetch_international_debt_full,
+)
 
 api = Blueprint("api", __name__, url_prefix="/api/v1")
 
@@ -26,4 +31,27 @@ def get_debt():
     Return live debt data from BigQuery (limited to 100 rows).
     """
     rows = get_debt_data(limit=100)
+    return jsonify(rows), 200
+
+
+api = Blueprint("api", __name__, url_prefix="/api/v1")
+
+@api.route("/country_summary", methods=["GET"])
+def country_summary():
+    rows = fetch_country_summary()
+    return jsonify(rows), 200
+
+@api.route("/country_series", methods=["GET"])
+def country_series():
+    rows = fetch_country_series()
+    return jsonify(rows), 200
+
+@api.route("/series_summary", methods=["GET"])
+def series_summary():
+    rows = fetch_series_summary()
+    return jsonify(rows), 200
+
+@api.route("/international_debt", methods=["GET"])
+def international_debt():
+    rows = fetch_international_debt_full()
     return jsonify(rows), 200
