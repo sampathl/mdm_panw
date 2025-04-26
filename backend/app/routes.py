@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, current_app
+from flask import Blueprint, jsonify, request, current_app
 import json
 from pathlib import Path
 from app.services.bigquery_service import (
@@ -7,6 +7,7 @@ from app.services.bigquery_service import (
     fetch_country_series,
     fetch_series_summary,
     fetch_international_debt_full,
+    fetch_international_debt_dynamic,
 )
 
 api = Blueprint("api", __name__, url_prefix="/api/v1")
@@ -52,5 +53,9 @@ def series_summary():
 
 @api.route("/international_debt", methods=["GET"])
 def international_debt():
-    rows = fetch_international_debt_full()
+    filters = request.args.to_dict()
+    if filters:
+        rows = fetch_international_debt_dynamic(filters)
+    else:
+        rows = fetch_international_debt_full()
     return jsonify(rows), 200

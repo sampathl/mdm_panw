@@ -69,3 +69,42 @@ def fetch_international_debt_full():
         LIMIT 10000
     """
     return [dict(row) for row in client.query(query).result()]
+
+def fetch_international_debt_dynamic(filters):
+    where_clauses = ["value IS NOT NULL"]
+    params = {}
+
+    if "year" in filters:
+        where_clauses.append("year = @year")
+        params["year"] = int(filters["year"])
+
+    if "country" in filters:
+        where_clauses.append("country_code = @country")
+        params["country"] = filters["country"]
+
+    if "indicator" in filters:
+        where_clauses.append("indicator_code = @indicator")
+        params["indicator"] = filters["indicator"]
+
+    where_statement = " AND ".join(where_clauses)
+
+    query = f"""
+        SELECT country_name, country_code, indicator_name, indicator_code, value, year
+        FROM `bigquery-public-data.world_bank_intl_debt.international_debt`
+        WHERE {where_statement}
+        ORDER BY year DESC
+        LIMIT 1000
+    """
+
+    job_config = bigquery.QueryJobConfig(
+        query_parameters=[
+            bigquery.ScalarQueryParameter("year", "INT64", params.get("year")) if "year" in params else None,
+            bigquery.ScalarQueryParameter("country", "STRING", params.get("country")) if "country" in params else None,
+            bigquery.ScalarQueryParameter("indicator", "STRING", params.get("indicator")) if "indicator" in params else None,
+        ]
+    )
+
+    query_job = client.query(query, job_config=job_config)
+    results = query_job.result()
+
+    return [dict(row) for row in results]
