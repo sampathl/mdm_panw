@@ -1,12 +1,13 @@
+// src/redux/debtSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-
+// Thunk to fetch international debt data
 export const fetchDebtData = createAsyncThunk(
   "debt/fetchDebtData",
   async () => {
-    const response = await fetch("http://localhost:5000/api/v1/debt");
+    const response = await fetch("http://localhost:5000/api/v1/international_debt");
     if (!response.ok) {
-      throw new Error("Failed to fetch debt data");
+      throw new Error("Failed to fetch international debt data");
     }
     return await response.json();
   }
@@ -16,7 +17,7 @@ const debtSlice = createSlice({
   name: "debt",
   initialState: {
     data: [],
-    status: "idle",
+    status: "idle", // "idle" | "loading" | "succeeded" | "failed"
     error: null,
   },
   reducers: {},
