@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, current_app
 import json
 from pathlib import Path
 from app.services.bigquery_service import (
+    get_debt_data,
     fetch_country_summary,
     fetch_country_series,
     fetch_series_summary,
@@ -33,8 +34,6 @@ def get_debt():
     rows = get_debt_data(limit=100)
     return jsonify(rows), 200
 
-
-api = Blueprint("api", __name__, url_prefix="/api/v1")
 
 @api.route("/country_summary", methods=["GET"])
 def country_summary():

@@ -19,7 +19,7 @@ import TableChartIcon from "@mui/icons-material/TableChart";
 const drawerWidth = 220;
 
 
-export default function DashboardLayout({ children }) {
+export default function DashboardLayout({ children, onMenuClick }) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
 
@@ -29,14 +29,14 @@ export default function DashboardLayout({ children }) {
         MDM Demo
       </Typography>
       <List>
-        <ListItemButton>
+        <ListItemButton onClick={() => onMenuClick("overview")}>
           <ListItemIcon>
             <DashboardIcon />
           </ListItemIcon>
           <ListItemText primary="Overview" />
         </ListItemButton>
 
-        <ListItemButton>
+        <ListItemButton onClick={() => onMenuClick("debt_table")}>
           <ListItemIcon>
             <TableChartIcon />
           </ListItemIcon>
@@ -50,26 +50,24 @@ export default function DashboardLayout({ children }) {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
 
-
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
           <IconButton
             color="inherit"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}   // only on mobile
+            sx={{ mr: 2, display: { sm: "none" } }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            International Debt Dashboard
+          <Typography variant="h6" noWrap>
+            International Debt Dashboard
           </Typography>
         </Toolbar>
       </AppBar>
 
       <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: 0 }}>
-
-        {/* desktop variant */}
+        
         <Drawer
           variant="permanent"
           sx={{
@@ -81,7 +79,6 @@ export default function DashboardLayout({ children }) {
           {drawer}
         </Drawer>
       </Box>
-
 
       <Box
         component="main"

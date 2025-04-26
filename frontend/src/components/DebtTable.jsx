@@ -36,7 +36,7 @@ import {
                   <TableCell align="right">{row.year}</TableCell>
                   <TableCell>{row.debt_type}</TableCell>
                   <TableCell align="right">
-                    {row.usd_millions.toLocaleString()}
+                    {row.value.toLocaleString()}
                   </TableCell>
                 </TableRow>
               ))}
