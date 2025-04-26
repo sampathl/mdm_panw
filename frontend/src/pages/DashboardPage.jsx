@@ -7,6 +7,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import FilterBar from "../components/FilterBar";
 import OverviewCard from "../components/OverviewCard";
 import DebtTable from "../components/DebtTable";
+import GenericTable from "../components/GenericTable";
 import TableSelector from "../components/TableSelector";
 
 export default function DashboardPage() {
@@ -82,9 +83,9 @@ export default function DashboardPage() {
                 onTableChange={setSelectedTable}
               />
               {isDebtTableSelected ? (
-                <DebtTable rows={debtData} />
+                <GenericTable rows={debtData} />
               ) : (
-                <DebtTable rows={otherTableData} />
+                <GenericTable rows={otherTableData} />
               )}
             </>
           )}
