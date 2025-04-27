@@ -80,14 +80,6 @@ export default function InternationalDebtTable() {
     );
   }
 
-  if (!data.length) {
-    return (
-      <Box sx={{ textAlign: "center", mt: 4 }}>
-        <Typography variant="body1">No debt data available.</Typography>
-      </Box>
-    );
-  }
-
   return (
     <Box>
       {/* Filters */}
@@ -126,6 +118,9 @@ export default function InternationalDebtTable() {
       </Box>
 
       {/* Table */}
+      {loading ? (
+      <CircularProgress />
+    ) : data.length > 0 ?
       <TableContainer component={Paper}>
         <Table size="small">
           <TableHead>
@@ -155,6 +150,11 @@ export default function InternationalDebtTable() {
           </TableBody>
         </Table>
       </TableContainer>
+      : (
+        <Typography variant="body1" align="center">
+          No data available for selected filters.
+        </Typography>
+      )}
     </Box>
   );
 }

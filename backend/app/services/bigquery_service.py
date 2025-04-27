@@ -71,23 +71,32 @@ def fetch_international_debt_full():
     return [dict(row) for row in client.query(query).result()]
 
 def fetch_international_debt_dynamic(filters):
+
     where_clauses = ["value IS NOT NULL"]
-    params = {}
+    query_parameters = []
 
-    if "year" in filters:
+    if filters.get("year"):
         where_clauses.append("year = @year")
-        params["year"] = int(filters["year"])
+        query_parameters.append(
+            bigquery.ScalarQueryParameter("year", "INT64", int(filters["year"]))
+        )
 
-    if "country" in filters:
-        where_clauses.append("country_code = @country")
-        params["country"] = filters["country"]
+    if filters.get("country"):
+        where_clauses.append("country_name = @country")
+        query_parameters.append(
+            bigquery.ScalarQueryParameter("country", "STRING", filters["country"])
+        )
 
-    if "indicator" in filters:
+    if filters.get("indicator"):
         where_clauses.append("indicator_code = @indicator")
-        params["indicator"] = filters["indicator"]
+        query_parameters.append(
+            bigquery.ScalarQueryParameter("indicator", "STRING", filters["indicator"])
+        )
 
+    # Build the final WHERE statement
     where_statement = " AND ".join(where_clauses)
 
+    # Final Query String
     query = f"""
         SELECT country_name, country_code, indicator_name, indicator_code, value, year
         FROM `bigquery-public-data.world_bank_intl_debt.international_debt`
@@ -96,15 +105,17 @@ def fetch_international_debt_dynamic(filters):
         LIMIT 1000
     """
 
+    # Setup Job Config
     job_config = bigquery.QueryJobConfig(
-        query_parameters=[
-            bigquery.ScalarQueryParameter("year", "INT64", params.get("year")) if "year" in params else None,
-            bigquery.ScalarQueryParameter("country", "STRING", params.get("country")) if "country" in params else None,
-            bigquery.ScalarQueryParameter("indicator", "STRING", params.get("indicator")) if "indicator" in params else None,
-        ]
+        query_parameters=query_parameters
     )
 
+    # Debugging
+    print("Final Query String:\n", query)
+    print("Final Query Parameters:\n", query_parameters)
+
+    # Execute
     query_job = client.query(query, job_config=job_config)
     results = query_job.result()
-
-    return [dict(row) for row in results]
+    data=[dict(row) for row in results]
+    return data
