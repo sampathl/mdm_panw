@@ -5,10 +5,11 @@ import { fetchCountrySummary } from "../redux/countrySummarySlice";
 import { fetchCountrySeries } from "../redux/countrySeriesSlice";
 import { fetchSeriesSummary } from "../redux/seriesSummarySlice";
 import { fetchDebtData } from "../redux/debtSlice";
+import OverviewCardContainer from "../components/OverviewCards/OverviewCardContainer";
 
 import DashboardLayout from "../layouts/DashboardLayout";
 import FilterBar from "../components/FilterBar";
-import OverviewCard from "../components/OverviewCard";
+import OverviewCard from "../components/OverviewCards/OverviewCard";
 import GenericTable from "../components/GenericTable";
 import InternationalDebtTable from "../components/InternationalDebtTable";
 import TableSelector from "../components/TableSelector";
@@ -52,19 +53,7 @@ export default function DashboardPage() {
             <>
               <Typography variant="h4" gutterBottom>Overview</Typography>
               <FilterBar />
-              <Box sx={{ mt: 2 }}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} md={4}>
-                    <OverviewCard title="Total Debt" value={`$Placeholder amount`} />
-                  </Grid>
-                  <Grid item xs={12} md={4}>
-                    <OverviewCard title="Top Debtor" value={`$ Placeholder country)`} />
-                  </Grid>
-                  <Grid item xs={12} md={4}>
-                    <OverviewCard title="# of Countries" value={'uniqueCountries'} />
-                  </Grid>
-                </Grid>
-              </Box>
+              <OverviewCardContainer />
 
             </>
           )}
