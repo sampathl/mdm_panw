@@ -1,10 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const filterSlice = createSlice({
-  name: "filters",
+  name: 'filters',
   initialState: {
-    selectedYear: "All",
-    selectedCountry: "All",
+    selectedYear: 'All',
+    selectedCountry: 'All',
   },
   reducers: {
     setSelectedYear(state, action) {
