@@ -1,5 +1,4 @@
-import { Tabs, Tab, Box } from "@mui/material";
-
+import { Tabs, Tab, Box } from '@mui/material';
 
 export default function TableSelector({ selectedTable, onTableChange }) {
   const handleChange = (event, newValue) => {
@@ -7,7 +6,7 @@ export default function TableSelector({ selectedTable, onTableChange }) {
   };
 
   return (
-    <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 2 }}>
+    <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
       <Tabs
         value={selectedTable}
         onChange={handleChange}
