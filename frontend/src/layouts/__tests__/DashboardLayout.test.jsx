@@ -8,7 +8,7 @@ test('simple test', () => {
     default: vi.fn(() => <div data-testid="sidebar-menu" />),
   }));
 
-  describe('DashboardLayout', () => {
+  describe('DashboardLayou', () => {
     it('renders the AppBar with the correct title', () => {
       render(<DashboardLayout>Test Content</DashboardLayout>);
       expect(

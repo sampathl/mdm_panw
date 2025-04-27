@@ -2,9 +2,8 @@ import React from 'react';
 import { AppBar, Box, CssBaseline, Drawer, Typography } from '@mui/material';
 import SidebarMenu from './SidebarMenu';
 
-const drawerWidth = 220;
-
 export default function DashboardLayout({ children, onMenuClick }) {
+  const drawerWidth = 220;
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
