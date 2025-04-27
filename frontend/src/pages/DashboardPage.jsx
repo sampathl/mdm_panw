@@ -6,10 +6,9 @@ import { fetchCountrySeries } from "../redux/countrySeriesSlice";
 import { fetchSeriesSummary } from "../redux/seriesSummarySlice";
 import { fetchDebtData } from "../redux/debtSlice";
 import OverviewCardContainer from "../components/OverviewCards/OverviewCardContainer";
+import TopNDebtorsChart from "../components/Charts/TopNDebtorsChart";
 
 import DashboardLayout from "../layouts/DashboardLayout";
-import FilterBar from "../components/FilterBar";
-import OverviewCard from "../components/OverviewCards/OverviewCard";
 import GenericTable from "../components/GenericTable";
 import InternationalDebtTable from "../components/InternationalDebtTable";
 import TableSelector from "../components/TableSelector";
@@ -52,8 +51,9 @@ export default function DashboardPage() {
           {selectedView === "overview" && (
             <>
               <Typography variant="h4" gutterBottom>Overview</Typography>
-              <FilterBar />
+               
               <OverviewCardContainer />
+              <TopNDebtorsChart />
 
             </>
           )}
