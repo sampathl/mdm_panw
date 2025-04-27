@@ -1,13 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { fetchSeriesSummaryData } from "../api/api";
 
 export const fetchSeriesSummary = createAsyncThunk(
   "seriesSummary/fetchSeriesSummary",
   async () => {
-    const response = await fetch("http://localhost:5000/api/v1/series_summary");
-    if (!response.ok) {
-      throw new Error("Failed to fetch series summary data");
-    }
-    return await response.json();
+    return await fetchSeriesSummaryData();
   }
 );
 

@@ -15,6 +15,7 @@ import {
   TableBody,
   Paper,
 } from "@mui/material";
+import { fetchInternationalDebtData } from "../api/api";
 
 
 export default function InternationalDebtTable() {
@@ -25,52 +26,40 @@ export default function InternationalDebtTable() {
   const [selectedCountry, setSelectedCountry] = useState("All");
   const [loading, setLoading] = useState(false);
 
-  // Fetch all data once initially to populate filter options
-  const fetchInitialData = async () => {
+  const loadDebtData = async (filters = {}) => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/v1/international_debt");
-      const json = await res.json();
+      const json = await fetchInternationalDebtData(filters);
       setData(json);
 
-      const years = Array.from(new Set(json.map((row) => row.year))).sort((a, b) => b - a);
-      const countries = Array.from(new Set(json.map((row) => row.country_name))).sort();
-
-      setYearOptions(years);
-      setCountryOptions(countries);
+      if (!filters.year && !filters.country) {
+        const years = Array.from(new Set(json.map((row) => row.year))).sort((a, b) => b - a);
+        const countries = Array.from(new Set(json.map((row) => row.country_name))).sort();
+        setYearOptions(years);
+        setCountryOptions(countries);
+      }
     } catch (error) {
-      console.error("Failed to fetch initial debt data:", error);
-    }
-    setLoading(false);
-  };
-
-  // Fetch filtered data dynamically
-  const fetchFilteredData = async () => {
-    setLoading(true);
-    try {
-      const params = new URLSearchParams();
-      if (selectedYear !== "All") params.append("year", selectedYear);
-      if (selectedCountry !== "All") params.append("country", selectedCountry);
-
-      const res = await fetch(`http://localhost:5000/api/v1/international_debt?${params.toString()}`);
-      const json = await res.json();
-      setData(json);
-    } catch (error) {
-      console.error("Failed to fetch filtered debt data:", error);
+      console.error("Failed to load debt data:", error);
     }
     setLoading(false);
   };
 
   useEffect(() => {
-    fetchInitialData();
+    loadDebtData();
   }, []);
 
   useEffect(() => {
-    // Fetch only when filter changes (not on mount)
     if (selectedYear !== "All" || selectedCountry !== "All") {
-      fetchFilteredData();
+      loadDebtData({
+        year: selectedYear !== "All" ? selectedYear : undefined,
+        country: selectedCountry !== "All" ? selectedCountry : undefined,
+      });
+    }
+    if (selectedYear === "All" && selectedCountry === "All") {
+      loadDebtData();
     }
   }, [selectedYear, selectedCountry]);
+
 
   if (loading) {
     return (
@@ -82,7 +71,6 @@ export default function InternationalDebtTable() {
 
   return (
     <Box>
-      {/* Filters */}
       <Box sx={{ display: "flex", gap: 2, mb: 2, flexWrap: "wrap" }}>
         <FormControl size="small" sx={{ minWidth: 140 }}>
           <InputLabel>Year</InputLabel>
@@ -117,7 +105,6 @@ export default function InternationalDebtTable() {
         </FormControl>
       </Box>
 
-      {/* Table */}
       {loading ? (
       <CircularProgress />
     ) : data.length > 0 ?
