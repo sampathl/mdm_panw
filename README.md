@@ -20,11 +20,5 @@ Built with **React + Vite** on the frontend, **Flask** on the backend, and deplo
 
 ## 🏛️ Architecture Overview
 
-```plaintext
-[ React Frontend (Vite + HashRouter) ]
-          ↓ HTTPS
-[ GCP Cloud Storage (Static Hosting) ]
-          ↓ HTTPS API Calls
-[ GCP Cloud Run (Flask Backend API) ]
-          ↓ Secure Service Account Access
-[ GCP BigQuery (World Bank Data) ]
+<img width="497" alt="image" src="https://github.com/user-attachments/assets/228118bd-1748-470b-9dbd-39bb0bbf3e20" />
+
