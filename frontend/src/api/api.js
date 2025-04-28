@@ -1,4 +1,5 @@
-const API_BASE_URL = 'http://localhost:5000/api/v1';
+const API_BASE_URL =
+  'https://intl-debt-backend-765483523765.us-central1.run.app/api/v1';
 
 export async function fetchInternationalDebtData(filters = {}) {
   const params = new URLSearchParams();

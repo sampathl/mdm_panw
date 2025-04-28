@@ -1,6 +1,8 @@
 from flask import Blueprint, jsonify, request, current_app
 import json
 from pathlib import Path
+
+
 from app.services.bigquery_service import (
     get_debt_data,
     fetch_country_summary,
@@ -11,6 +13,22 @@ from app.services.bigquery_service import (
 )
 
 api = Blueprint("api", __name__, url_prefix="/api/v1")
+debug_blueprint = Blueprint('debug', __name__)
+root_blueprint = Blueprint('root', __name__)
+
+@debug_blueprint.route("/api/debug/files")
+def list_files():
+    file_structure = {}
+    for root, dirs, files in os.walk("/app"):
+        file_structure[root] = {
+            "dirs": dirs,
+            "files": files
+        }
+    return jsonify(file_structure)
+
+@root_blueprint.route("/", methods=["GET"])
+def root():
+    return {"message": "Welcome to the International Debt API Backend!"}
 
 # GET /api/v1/debt  → returns the static JSON array
 @api.route("/debt-mock", methods=["GET"])

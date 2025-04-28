@@ -1,13 +1,16 @@
 from google.cloud import bigquery
 from pathlib import Path
 import os
+import logging
 
 PROJECT_ID = "bigquery-public-data"
 DATASET = "world_bank_intl_debt"
 TABLE = "international_debt"
 
+logging.critical("Credentials being picked up")
+
 #change for Deployed service
-CREDENTIALS_FILE = Path(os.getenv("BIGQUERY_CREDENTIALS", "../../credentials/bigquery-key.json"))
+CREDENTIALS_FILE = Path( "/app/credentials/mdm-panw-457918-1dac1272e047.json")
 
 client = bigquery.Client.from_service_account_json(str(CREDENTIALS_FILE))
 
@@ -29,6 +32,7 @@ def get_debt_data(limit=100):
     results = query_job.result()
 
     rows = [dict(row) for row in results]
+    logging.critical("get_debt_data called")
     return rows
 
 def fetch_country_summary():
@@ -39,6 +43,7 @@ def fetch_country_summary():
         WHERE country_code IS NOT NULL
         ORDER BY short_name
     """
+    logging.critical("get_debt_data called")
     return [dict(row) for row in client.query(query).result()]
 
 def fetch_country_series():
